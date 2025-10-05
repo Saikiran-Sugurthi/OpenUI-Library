@@ -1,21 +1,22 @@
 "use client"
 
 import React from "react"
-import Image from "next/image" // Import the Next.js Image component
+// We are removing the next/image import for the default preview
+// import Image from "next/image"
 
-// Default slides for the preview
+// Default slides for the preview have been changed to landscapes
 const defaultSlides = [
   {
-    src: "https://picsum.photos/id/1018/1200/500",
-    alt: "Scenic view of mountains and a lake",
+    src: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=1200&auto=format&fit=crop",
+    alt: "A lush green forest path with sunlight filtering through",
   },
   {
-    src: "https://picsum.photos/id/1015/1200/500",
-    alt: "A person standing on a mountain peak",
+    src: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=1200&auto=format&fit=crop",
+    alt: "A serene lake with a mountain reflection",
   },
   {
-    src: "https://picsum.photos/id/1025/1200/500",
-    alt: "A friendly dog in a natural setting",
+    src: "https://images.unsplash.com/photo-1433838552652-f9a46b332c40?q=80&w=1200&auto=format&fit=crop",
+    alt: "A dramatic waterfall in a rocky landscape",
   },
 ]
 
@@ -25,8 +26,14 @@ const styles = {
     position: "relative",
     overflow: "hidden",
     margin: "auto",
-    borderRadius: "8px",
+    borderRadius: "12px",
     WebkitTapHighlightColor: "transparent",
+  },
+  // Style for the default preview images using a standard <img> tag
+  slideImage: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover", // Use standard CSS object-fit
   },
   trackContainer: {
     width: "100%",
@@ -41,8 +48,8 @@ const styles = {
     boxSizing: "border-box",
     userSelect: "none",
     WebkitUserDrag: "none",
-    position: "relative", // Required for Next.js Image with layout fill
-    aspectRatio: "1200 / 500", // Maintain aspect ratio
+    position: "relative",
+    aspectRatio: "1200 / 500",
   },
   arrow: {
     position: "absolute",
@@ -83,7 +90,7 @@ const styles = {
   },
   dot: (isActive) => ({
     border: "none",
-    backgroundColor: isActive ? "white" : "rgba(255, 255, 255, 0.5)",
+    backgroundColor: isActive ? "#3b82f6" : "rgba(255, 255, 255, 0.5)",
     width: "12px",
     height: "12px",
     borderRadius: "50%",
@@ -105,9 +112,10 @@ const Carousel = ({
   const hasChildren = React.Children.count(children) > 0
   const slides = hasChildren
     ? React.Children.toArray(children)
+    // Reverted to a standard <img> tag for previewer compatibility
     : defaultSlides.map((slide) => (
-      <Image key={slide.src} src={slide.src} alt={slide.alt} layout="fill" objectFit="cover" />
-    ))
+        <img key={slide.src} src={slide.src} alt={slide.alt} style={styles.slideImage} />
+      ))
 
   const [currentIndex, setCurrentIndex] = React.useState(0)
   const totalSlides = slides.length
